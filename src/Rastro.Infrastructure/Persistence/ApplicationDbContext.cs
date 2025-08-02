@@ -85,11 +85,11 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         // Obtener agregados con eventos ANTES de guardar
         var aggregatesWithEvents = ChangeTracker.Entries<AggregateRoot>()
-            .Where(x => x.Entity.GetDomainEvents().Any())
+            .Where(x => x.Entity.DomainEvents.Any())
             .ToList();
         // Todos los eventos
         var domainEvents = aggregatesWithEvents
-                .SelectMany(x => x.Entity.GetDomainEvents())
+                .SelectMany(x => x.Entity.DomainEvents)
                 .ToList();
         // Limpiar eventos de los agregados ANTES de guardar
         aggregatesWithEvents.ForEach(entry => entry.Entity.ClearDomainEvents());
@@ -105,12 +105,12 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         // Obtener agregados con eventos ANTES de guardar
         var aggregatesWithEvents = ChangeTracker.Entries<AggregateRoot>()
-            .Where(x => x.Entity.GetDomainEvents().Any())
+            .Where(x => x.Entity.DomainEvents.Any())
             .ToList();
 
         // Obtener todos los eventos
         var domainEvents = aggregatesWithEvents
-            .SelectMany(x => x.Entity.GetDomainEvents())
+            .SelectMany(x => x.Entity.DomainEvents)
             .ToList();
 
         // Limpiar eventos de los agregados ANTES de guardar

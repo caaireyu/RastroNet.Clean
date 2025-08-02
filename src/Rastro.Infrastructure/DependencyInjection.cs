@@ -1,3 +1,4 @@
+using Cortex.Mediator.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +18,7 @@ public static class DependencyInjection
         IHostEnvironment environment)
     {
         services.AddPersistence(configuration, environment)
-            .AddDomainServices()
+            .AddDomainServices(configuration)
             .AddExternalServices(configuration);
         
         return services;
@@ -76,11 +77,18 @@ public static class DependencyInjection
         }
         
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+        services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
         return services;
     }
 
-    private static IServiceCollection AddDomainServices(this IServiceCollection services)
+    private static IServiceCollection AddDomainServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddCortexMediator(
+            configuration, new[] { typeof(CortexDomainEventPublisher) },
+            configure: options =>
+            {
+                options.AddDefaultBehaviors();
+            });
         services.AddScoped<IDomainEventPublisher, CortexDomainEventPublisher>();
         return services;
     }

@@ -16,7 +16,7 @@ public static class ApplicationBuilderExtensions
     {
         using var scope = app.ApplicationServices.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<MigrationRunner>>();
 
         try
         {
