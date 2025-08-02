@@ -1,0 +1,6 @@
+@Rastro.Api_HostAddress = http://localhost:5075
+
+GET {{Rastro.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

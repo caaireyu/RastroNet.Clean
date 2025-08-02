@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0D221A7A-0DC1-41A1-B4B7-23CFB35C53E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rastro.Api", "src\Rastro.Api\Rastro.Api.csproj", "{E6BE096E-252E-4848-B6F3-F41C492B8E95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rastro.Application", "src\Rastro.Application\Rastro.Application.csproj", "{CE9E5F0F-638F-43F6-BE66-ACA479D93DF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rastro.Infrastructure", "src\Rastro.Infrastructure\Rastro.Infrastructure.csproj", "{A75982D7-5BFE-493F-B569-6A64150704DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rastro.Domain", "src\Rastro.Domain\Rastro.Domain.csproj", "{13B28A79-493A-47C5-98AC-002A6EB9FE19}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E6BE096E-252E-4848-B6F3-F41C492B8E95} = {0D221A7A-0DC1-41A1-B4B7-23CFB35C53E2}
+		{CE9E5F0F-638F-43F6-BE66-ACA479D93DF0} = {0D221A7A-0DC1-41A1-B4B7-23CFB35C53E2}
+		{A75982D7-5BFE-493F-B569-6A64150704DF} = {0D221A7A-0DC1-41A1-B4B7-23CFB35C53E2}
+		{13B28A79-493A-47C5-98AC-002A6EB9FE19} = {0D221A7A-0DC1-41A1-B4B7-23CFB35C53E2}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E6BE096E-252E-4848-B6F3-F41C492B8E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6BE096E-252E-4848-B6F3-F41C492B8E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6BE096E-252E-4848-B6F3-F41C492B8E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6BE096E-252E-4848-B6F3-F41C492B8E95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE9E5F0F-638F-43F6-BE66-ACA479D93DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE9E5F0F-638F-43F6-BE66-ACA479D93DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE9E5F0F-638F-43F6-BE66-ACA479D93DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE9E5F0F-638F-43F6-BE66-ACA479D93DF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A75982D7-5BFE-493F-B569-6A64150704DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A75982D7-5BFE-493F-B569-6A64150704DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A75982D7-5BFE-493F-B569-6A64150704DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A75982D7-5BFE-493F-B569-6A64150704DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13B28A79-493A-47C5-98AC-002A6EB9FE19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13B28A79-493A-47C5-98AC-002A6EB9FE19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13B28A79-493A-47C5-98AC-002A6EB9FE19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13B28A79-493A-47C5-98AC-002A6EB9FE19}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
