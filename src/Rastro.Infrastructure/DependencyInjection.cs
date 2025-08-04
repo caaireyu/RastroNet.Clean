@@ -1,10 +1,8 @@
-using Cortex.Mediator.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Rastro.Application.Interfaces;
 using Rastro.Infrastructure.Persistence;
 using Rastro.Infrastructure.Services;
@@ -30,8 +28,8 @@ public static class DependencyInjection
     {
         var connectionString = configuration.GetConnectionString("PostgreSql")
             ?? throw new InvalidOperationException("La conexión a la base de datos no existe");
-        
-        services.AddDbContext<ApplicationDbContext>(options =>
+
+        services.AddDbContext<ApplicationDbContext>((servicesProvider, options) =>
         {
             options.UseNpgsql(connectionString, npgsqlOptions =>
             {
@@ -39,7 +37,7 @@ public static class DependencyInjection
                 npgsqlOptions.EnableRetryOnFailure(
                     maxRetryCount: 3,
                     maxRetryDelay: TimeSpan.FromSeconds(5),
-                    errorCodesToAdd: null);
+                    errorCodesToAdd: []);
                 npgsqlOptions.CommandTimeout(30);
             });
             if (environment.IsDevelopment())
@@ -48,47 +46,35 @@ public static class DependencyInjection
                 options.EnableDetailedErrors();
                 options.ConfigureWarnings(warnings =>
                 {
-                    // Mostrar warnings útiles en desarrollo
-                    warnings.Log(CoreEventId.SensitiveDataLoggingEnabledWarning);
-                    warnings.Log(RelationalEventId.MultipleCollectionIncludeWarning);
-                    warnings.Log(CoreEventId.FirstWithoutOrderByAndFilterWarning);
-                    
-                    // Ignorar warnings menos importantes
+                    warnings.Log(
+                        CoreEventId.SensitiveDataLoggingEnabledWarning,
+                        RelationalEventId.MultipleCollectionIncludeWarning,
+                        CoreEventId.FirstWithoutOrderByAndFilterWarning
+                        );
                     warnings.Ignore(CoreEventId.RowLimitingOperationWithoutOrderByWarning);
                 });
             }
-            else if (environment.IsProduction())
+            else
             {
-                options.EnableServiceProviderCaching();
+
                 options.EnableSensitiveDataLogging(false);
                 options.EnableDetailedErrors(false);
-                
                 options.ConfigureWarnings(warnings =>
                 {
-                    // En producción, solo errores críticos
                     warnings.Default(WarningBehavior.Ignore);
                     warnings.Throw(RelationalEventId.QueryPossibleUnintendedUseOfEqualsWarning);
                 });
             }
+            
+
         });
-        if (environment.IsProduction())
-        {
-            services.AddDbContextPool<ApplicationDbContext>( options => options.UseNpgsql(connectionString));   
-        }
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         
-        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
-        services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
         return services;
     }
 
     private static IServiceCollection AddDomainServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddCortexMediator(
-            configuration, new[] { typeof(CortexDomainEventPublisher) },
-            configure: options =>
-            {
-                options.AddDefaultBehaviors();
-            });
         services.AddScoped<IDomainEventPublisher, CortexDomainEventPublisher>();
         return services;
     }

@@ -1,3 +1,4 @@
+using Rastro.Application;
 using Rastro.Infrastructure;
 using Rastro.Infrastructure.Extensions;
 
@@ -6,7 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Servicios al contenedor
-builder.Services.AddInfrastructure(
+builder.Services
+    .AddApplication(builder.Configuration)
+    .AddInfrastructure(
     builder.Configuration,builder.Environment);
 
 

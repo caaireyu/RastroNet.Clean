@@ -80,7 +80,7 @@ namespace Rastro.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("idx_users_email");
 
-                    b.ToTable("Users", "public");
+                    b.ToTable("users", "public");
                 });
 #pragma warning restore 612, 618
         }

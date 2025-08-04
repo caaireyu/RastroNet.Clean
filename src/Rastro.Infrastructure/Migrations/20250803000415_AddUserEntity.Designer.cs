@@ -12,7 +12,7 @@ using Rastro.Infrastructure.Persistence;
 namespace Rastro.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250802063031_AddUserEntity")]
+    [Migration("20250803000415_AddUserEntity")]
     partial class AddUserEntity
     {
         /// <inheritdoc />
@@ -83,7 +83,7 @@ namespace Rastro.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("idx_users_email");
 
-                    b.ToTable("Users", "public");
+                    b.ToTable("users", "public");
                 });
 #pragma warning restore 612, 618
         }

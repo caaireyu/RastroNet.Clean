@@ -15,7 +15,7 @@ namespace Rastro.Infrastructure.Migrations
                 name: "public");
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "users",
                 schema: "public",
                 columns: table => new
                 {
@@ -31,19 +31,19 @@ namespace Rastro.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.id);
+                    table.PrimaryKey("PK_users", x => x.id);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "idx_users_created_at",
                 schema: "public",
-                table: "Users",
+                table: "users",
                 column: "created_at");
 
             migrationBuilder.CreateIndex(
                 name: "idx_users_email",
                 schema: "public",
-                table: "Users",
+                table: "users",
                 column: "email",
                 unique: true);
         }
@@ -52,7 +52,7 @@ namespace Rastro.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Users",
+                name: "users",
                 schema: "public");
         }
     }
