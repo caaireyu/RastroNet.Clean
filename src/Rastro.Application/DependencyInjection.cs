@@ -1,6 +1,8 @@
+using Cortex.Mediator.Commands;
 using Cortex.Mediator.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Rastro.Application.Behaviors;
 
 namespace Rastro.Application;
 
@@ -14,6 +16,7 @@ public static class DependencyInjection
             {
                 options.AddDefaultBehaviors();
             });
+        services.AddScoped(typeof(ICommandPipelineBehavior<,>), typeof(TransactionalBehavior<,>));
         return services;
     }
     

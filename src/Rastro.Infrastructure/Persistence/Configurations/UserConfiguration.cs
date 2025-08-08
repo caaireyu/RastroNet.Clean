@@ -33,7 +33,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Email)
             .HasColumnName("email")
             .HasMaxLength(256)
-            .IsRequired();
+            .HasConversion(
+                email => email.ToLowerInvariant(),
+                email => email
+            ).IsRequired();
         
         builder.Property(u => u.Password)
             .HasColumnName("password")
@@ -46,15 +49,19 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.CreatedAt)
             .HasColumnName("created_at")
-            .HasColumnType("timestamp without time zone")
+            .HasColumnType("timestamp with time zone")
             .IsRequired();
 
         builder.Property(u => u.UpdatedAt)
             .HasColumnName("updated_at")
-            .HasColumnType("timestamp without time zone")
+            .HasColumnType("timestamp with time zone")
             .IsRequired(false);
         
         //Indices
+        builder.HasIndex(u => u.Username)
+            .IsUnique()
+            .HasDatabaseName("idx_users_username");
+        
         builder.HasIndex(u => u.Email)
             .IsUnique()
             .HasDatabaseName("idx_users_email");
@@ -63,12 +70,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasDatabaseName("idx_users_created_at");
 
         builder.Ignore(x => x.DomainEvents);
-        
-        builder.Property(x => x.Email)
-            .HasConversion(
-                email => email.ToLowerInvariant(),
-                email => email
-                );
+            
 
     }
 }

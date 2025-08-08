@@ -68,6 +68,7 @@ public static class DependencyInjection
             
 
         });
+        services.AddScoped<ITransactionalDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         return services;

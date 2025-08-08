@@ -7,7 +7,7 @@ using Rastro.Domain.Users;
 
 namespace Rastro.Infrastructure.Persistence;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : DbContext, ITransactionalDbContext
 {
     private readonly IDomainEventPublisher _eventPublisher;
     
@@ -53,5 +53,11 @@ public class ApplicationDbContext : DbContext
         
         return domainEvents;
     }
-    
+
+    public IDbContextTransaction? GetCurrentTransaction() => Database.CurrentTransaction;
+    public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+        => Database.BeginTransactionAsync(cancellationToken);
+
+    public IExecutionStrategy CreateExecutionStrategy() => Database.CreateExecutionStrategy();
+
 }
