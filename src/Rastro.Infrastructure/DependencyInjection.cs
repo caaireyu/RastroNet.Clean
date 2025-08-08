@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rastro.Application.Interfaces;
 using Rastro.Infrastructure.Persistence;
+using Rastro.Infrastructure.Security;
 using Rastro.Infrastructure.Services;
 
 namespace Rastro.Infrastructure;
@@ -18,6 +19,8 @@ public static class DependencyInjection
         services.AddPersistence(configuration, environment)
             .AddDomainServices(configuration)
             .AddExternalServices(configuration);
+        
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
         
         return services;
     }

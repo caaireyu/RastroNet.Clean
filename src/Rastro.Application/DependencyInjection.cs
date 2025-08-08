@@ -3,6 +3,7 @@ using Cortex.Mediator.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rastro.Application.Behaviors;
+using Rastro.Application.Interfaces;
 
 namespace Rastro.Application;
 

@@ -17,13 +17,13 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command,
         CancellationToken cancellationToken=default)
     {
-        var userId = await _mediator.SendCommandAsync<CreateUserCommand, Guid>(command, cancellationToken);
-        return CreatedAtAction(nameof(GetUserById), new { id = userId }, userId);
+        var createdUser = await _mediator.SendCommandAsync<CreateUserCommand, UserResponse>(command, cancellationToken);
+        return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
     }
     
     [HttpGet("{id:guid}")]
