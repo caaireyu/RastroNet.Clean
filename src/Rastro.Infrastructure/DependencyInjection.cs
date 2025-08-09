@@ -17,10 +17,9 @@ public static class DependencyInjection
         IHostEnvironment environment)
     {
         services.AddPersistence(configuration, environment)
+            .AddSecurity()
             .AddDomainServices(configuration)
             .AddExternalServices(configuration);
-        
-        services.AddScoped<IPasswordHasher, PasswordHasher>();
         
         return services;
     }
@@ -77,6 +76,11 @@ public static class DependencyInjection
         return services;
     }
 
+    private static IServiceCollection AddSecurity(this IServiceCollection services)
+    {
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+        return services;
+    }
     private static IServiceCollection AddDomainServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IDomainEventPublisher, CortexDomainEventPublisher>();

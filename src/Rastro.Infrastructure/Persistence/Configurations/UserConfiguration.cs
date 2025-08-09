@@ -66,8 +66,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsUnique()
             .HasDatabaseName("idx_users_email");
         
-        builder.HasIndex(u => u.CreatedAt)
-            .HasDatabaseName("idx_users_created_at");
+        /* builder.HasIndex(u => u.CreatedAt)
+            .HasDatabaseName("idx_users_created_at"); */
 
         builder.Ignore(x => x.DomainEvents);
             

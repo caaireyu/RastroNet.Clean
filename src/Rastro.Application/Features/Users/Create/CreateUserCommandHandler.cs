@@ -1,6 +1,7 @@
 using Cortex.Mediator.Commands;
 using Rastro.Application.Interfaces;
 using Rastro.Application.Features.Users.GetUserById;
+using Rastro.Domain.Exceptions;
 using Rastro.Domain.Users;
 
 namespace Rastro.Application.Features.Users.Create;
@@ -17,7 +18,13 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, UserR
     }
     public async Task<UserResponse> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
+        var userFound = await _unitOfWork.Users.GetByEmailAsync(command.Email, cancellationToken);
+        if (userFound is not null)
+        {
+            throw new DuplicateUserEmailException(command.Email);
+        }
         var hashedPassword = _passwordHasher.HashPassword(command.Password);
+        
         var user = User.Create(
             Guid.NewGuid(),
             command.Email,
