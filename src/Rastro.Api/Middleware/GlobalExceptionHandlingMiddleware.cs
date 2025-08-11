@@ -22,34 +22,34 @@ public class GlobalExceptionHandlingMiddleware
         {
             await _next(context);
         }
-        catch (DuplicateUserEmailException ex)
-        {
-            _logger.LogError(ex,"Intento de registro con email duplicado: {Message}", ex.Message);
-
-            context.Response.StatusCode = (int)HttpStatusCode.Conflict; //409
-            context.Response.ContentType = "application/json";
-
-            var error = new ApiError("User.DuplicateEmail", ex.Message);
-            var response = new ApiResponse<object> { IsSuccess = false, Errors = [error] };
-            
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
-        }
+        
         catch (Exception ex)
         {
-            _logger.LogError(ex,"Ha ocurrido un error inesperado: {Message}", ex.Message);
-
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            context.Response.ContentType = "application/json";
-
-            var error = new ApiError("ServerError", "Ha ocurrido un error inesperado. Inténtelo más tarde");
-            var response = new ApiResponse<object> { IsSuccess = false, Errors = [error] };
-            
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            await HandleExceptionAsync(context, ex);
         }
     }
 
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        
+        (HttpStatusCode statusCode, ApiError error) = exception switch
+        {
+            DuplicateUserEmailException ex => (HttpStatusCode.Conflict,
+                new ApiError("User.DuplicateEmail", ex.Message)),
+            _ => (HttpStatusCode.InternalServerError,
+                new ApiError("ServerError", "Ha ocurrido un error inesperado. Inténtelo más tarde"))
+
+        };
+        if (statusCode == HttpStatusCode.InternalServerError)
+        {
+            _logger.LogError(exception, "Ha ocurrido un error inesperado {Message}", exception.Message);
+        }
+        else
+        {
+            _logger.LogWarning(exception, "Excepción de negocio controlada {Message}", exception.Message);
+        }
+        context.Response.StatusCode = (int)statusCode;
+        context.Response.ContentType = "application/json";
+        var response = new ApiResponse<object> { IsSuccess = false, Errors = [error] };
+        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
     }
 }
